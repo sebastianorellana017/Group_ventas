@@ -23,19 +23,18 @@ class SizeVariationSerializer(serializers.ModelSerializer):
 
 class ProductSerializer(serializers.ModelSerializer):
 
-    available_sizes = serializers.SlugRelatedField(
-        many=True,
-        read_only=True,
-        slug_field='name'
-    )
+    #available_sizes = serializers.SlugRelatedField(
+    #    many=True,
+    #    read_only=True,
+    #    slug_field='name'
+    #)
 
     #available_colours = ColourVariationSerializer(many=True, read_only=True)
     categoria = serializers.SlugRelatedField(slug_field="name", queryset=Category.objects.all())
 
     class Meta:
         model = Product
-        fields = ['id', 'nombre', 'marca','image', 'descripcion', 'peso','valor', 'active', 'available_colours',
-                  'available_sizes', 'categoria', 'stock']
+        fields = ['id', 'nombre', 'marca','image', 'descripcion', 'peso','valor', 'active', 'categoria', 'cantidad']
 
 class OrderItemSerializer(serializers.ModelSerializer):
 
@@ -43,7 +42,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OrderItem
-        fields = ['order', 'product', 'quantity', 'colour', 'size']
+        fields = ['id', 'product', 'quantity']
 
 class AddressSerializer(serializers.ModelSerializer):
     class Meta:
@@ -53,13 +52,15 @@ class AddressSerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     #billing_address = serializers.SlugRelatedField(slug_field="billing_address", queryset=Address.objects.all())
     user = serializers.SlugRelatedField(slug_field="username", queryset=User.objects.all())
+    #last_name = serializers.SlugRelatedField(slug_field="last_name", queryset=User.objects.all())
+
     billing_address = serializers.SlugRelatedField(slug_field="address_line_1", queryset=Address.objects.all())
     shipping_address = serializers.SlugRelatedField(slug_field="address_line_2", queryset=Address.objects.all())
     
     class Meta:
         model = Order
         #fields = '__all__'
-        fields = ['user', 'start_date', 'ordered_date', 'ordered','billing_address','shipping_address']
+        fields = ['user','start_date', 'ordered_date', 'ordered','billing_address','shipping_address']
 
 class PaymentSerializer(serializers.ModelSerializer):
     user = serializers.SlugRelatedField(slug_field="username", queryset=User.objects.all())

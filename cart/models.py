@@ -67,10 +67,8 @@ class Product(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=False)
-    available_colours = models.ManyToManyField(ColourVariation, blank=True)
-    available_sizes = models.ManyToManyField(SizeVariation, default=SizeVariation.DEFAULT_PK)
     categoria = models.ForeignKey(Category, related_name='primary_products', on_delete=models.CASCADE, default=Category.DEFAULT_PK)
-    stock = models.IntegerField(default=1)
+    cantidad = models.IntegerField(default=1)
 
     def __str__(self):
         return self.nombre
@@ -82,16 +80,14 @@ class Product(models.Model):
         return "{:.2f}".format(self.valor / 100)
    
     @property
-    def in_stock(self):
-        return self.stock > 0
+    def in_cantidad(self):
+        return self.cantidad > 0
 
 
 class OrderItem(models.Model):
     order = models.ForeignKey("Order", related_name='items', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default = 1)
-    colour = models.ForeignKey(ColourVariation, on_delete=models.CASCADE)
-    size = models.ForeignKey(SizeVariation, on_delete=models.CASCADE)
     
     def __str__(self):
         return f"{self.quantity} x {self.product.nombre}"

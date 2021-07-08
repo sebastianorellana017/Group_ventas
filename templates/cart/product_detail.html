@@ -26,8 +26,8 @@
                 <h2 class="text-black">{{ product.nombre }}</h2>
                 <p>{{ product.descripcion }}</p>
 
-                <p>Available Stock: {{ product.stock }}</p>
-                {% if product.in_stock %}
+                <p>Available stock: {{ product.cantidad }}</p>
+                {% if product.in_cantidad %}
 
                 <form method="POST">
                     {% csrf_token %}

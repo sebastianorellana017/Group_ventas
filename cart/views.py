@@ -59,9 +59,7 @@ class ProductDetailView(generic.FormView):
         product = self.get_object()
 
         item_filter = order.items.filter(
-            product=product,
-            colour=form.cleaned_data['colour'],
-            size=form.cleaned_data['size'])
+            product=product)
 
         if item_filter.exists():
             item = item_filter.first()
